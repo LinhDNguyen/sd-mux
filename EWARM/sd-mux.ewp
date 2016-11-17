@@ -38,7 +38,7 @@
         </option>
         <option>
           <name>Input description</name>
-          <state></state>
+          <state>Full formatting.</state>
         </option>
         <option>
           <name>Output variant</name>
@@ -47,7 +47,7 @@
         </option>
         <option>
           <name>Output description</name>
-          <state></state>
+          <state>Full formatting.</state>
         </option>
         <option>
           <name>GOutputBinary</name>
@@ -984,6 +984,12 @@
     <group>
       <name>User</name>
       <file>
+        <name>$PROJ_DIR$\..\Src\board.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Src\exec_task.c</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\Src\freertos.c</name>
       </file>
       <file>
@@ -997,6 +1003,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\Src\stm32f1xx_it.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\Src\uart_task.c</name>
       </file>
     </group>
   </group>

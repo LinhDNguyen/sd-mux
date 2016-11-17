@@ -44,6 +44,7 @@
 #include "main.h"
 #include "stm32f1xx_hal.h"
 #include "cmsis_os.h"
+#include "board.h"
 
 /* USER CODE BEGIN Includes */
 
@@ -54,7 +55,7 @@ I2C_HandleTypeDef hi2c2;
 
 UART_HandleTypeDef huart1;
 
-osThreadId defaultTaskHandle;
+osThreadId idleTaskHandle;
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
@@ -67,7 +68,7 @@ void Error_Handler(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C2_Init(void);
 static void MX_USART1_UART_Init(void);
-void StartDefaultTask(void const * argument);
+void IdleTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
@@ -99,7 +100,9 @@ int main(void)
   MX_USART1_UART_Init();
 
   /* USER CODE BEGIN 2 */
-
+  leds_init();
+  // button init
+  // control GPIO init
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -116,8 +119,8 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  osThreadDef(defaultTask, IdleTask, osPriorityIdle, 0, 128);
+  idleTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -250,15 +253,21 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* StartDefaultTask function */
-void StartDefaultTask(void const * argument)
+/* Idle task function */
+void IdleTask(void const * argument)
 {
-
+  char tmp = 0;
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osDelay(1000);
+    if (tmp) {
+      // LED 1 ON, LED 2 OFF
+    } else {
+      // LED 1 OFF, LED 2 ON
+    }
+    tmp = !tmp;
   }
   /* USER CODE END 5 */ 
 }
