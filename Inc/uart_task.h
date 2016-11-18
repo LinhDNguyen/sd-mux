@@ -1,12 +1,14 @@
 #ifndef ___UART_TASK_H___
 #define ___UART_TASK_H___
-#include "stm32f1xx_hal.h"
-#include "cmsis_os.h"
 
+#define UART_RX_BUFF_SIZE 128
 
 extern osThreadId uartTaskHandle;
-extern QueueHandle_t uartQueue;
+extern osMessageQId uartQueueHandle;
 
-void UartTask(void const * argument);
+extern uint8_t uartRxBuf[UART_RX_BUFF_SIZE];
+extern uint8_t const * uartRxTailPtr;
+
+void uartTaskExecution(void);
 
 #endif /* ___UART_TASK_H___ */
