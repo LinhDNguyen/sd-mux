@@ -11,28 +11,39 @@ typedef enum {
   EXEC_MAX
 } exec_type_id_t;
 
+typedef enum {
+  CMD_CLEAR = 0,
+  CMD_OFF = CMD_CLEAR,
+  CMD_ON,
+  CMD_SET = CMD_ON,
+  CMD_SET1,
+  CMD_SET2,
+  CMD_TOGGLE,
+  CMD_MAX
+} cmd_id_t;
+
 struct exec_sd_switch_cmd {
-  unsigned int cmd;
+  cmd_id_t cmd;
 };
 
 struct exec_power_cmd {
-  unsigned int cmd;
+  cmd_id_t cmd;
 };
 
 struct exec_ext_ctrl_cmd {
-  unsigned int channel:16;
-  unsigned int cmd:16;
+  cmd_id_t cmd;
+  uint16_t channel;
 };
 
 struct exec_jumper_switch_cmd {
-  unsigned int channel:16;
-  unsigned int cmd:16;
+  cmd_id_t cmd;
+  uint16_t channel;
 };
 
 struct exec_i2c_control_cmd {
   exec_type_id_t type;
+  cmd_id_t cmd;
   unsigned char addr;
-  unsigned char cmd;
 };
 
 struct exec_command {
