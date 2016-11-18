@@ -142,6 +142,8 @@ void MX_GPIO_Init(void)
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   struct exec_command cmd;
   BaseType_t xHigherPriorityTaskWoken;
+
+  cmd.resp_queue = NULL;
   switch (GPIO_Pin) {
     // TODO: Implement button press
     case BTN_INT_JB_1:
@@ -152,14 +154,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     break;
     case BTN_INT_JB_4:
     break;
-    case BTN_INT_I2C_INT:
-    break;
     case BTN_INT_POW:
     break;
     case BTN_INT_SDCARD:
       cmd.type = EXEC_SD_SWITCH;
       cmd.u.sd_switch.cmd = CMD_TOGGLE;
       xQueueSendFromISR(execQueueHandle, &cmd, &xHigherPriorityTaskWoken);
+    break;
+    case BTN_INT_I2C_INT:
     break;
     default:
     break;

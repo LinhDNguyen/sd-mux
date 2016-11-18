@@ -5,6 +5,7 @@
 
 extern osThreadId uartTaskHandle;
 extern osMessageQId uartQueueHandle;
+extern osMessageQId uartRespQueueHandle;
 
 extern uint8_t uartRxBuf[UART_RX_BUFF_SIZE];
 extern uint8_t const * uartRxTailPtr;

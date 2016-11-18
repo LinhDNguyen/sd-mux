@@ -2,6 +2,12 @@
 #define ___EXEC_TASK_H___
 
 typedef enum {
+  EXEC_ST_OK = 0,
+  EXEC_ST_ERROR,
+  EXEC_ST_MAX,
+} exec_status_t;
+
+typedef enum {
   EXEC_MIN = 0,
   EXEC_SD_SWITCH = EXEC_MIN,
   EXEC_POWER,
@@ -16,6 +22,7 @@ typedef enum {
   CMD_OFF = CMD_CLEAR,
   CMD_ON,
   CMD_SET = CMD_ON,
+  CMD_SET_BOTH = CMD_SET,
   CMD_SET1,
   CMD_SET2,
   CMD_TOGGLE,
@@ -48,11 +55,11 @@ struct exec_i2c_control_cmd {
 
 struct exec_command {
   exec_type_id_t type;
-
+  osMessageQId resp_queue;
   union {
     struct exec_sd_switch_cmd sd_switch;
     struct exec_power_cmd power;
-    struct exec_ext_ctrl_cmd ext_ctl;
+    struct exec_ext_ctrl_cmd ext_ctrl;
     struct exec_jumper_switch_cmd jump_switch;
     struct exec_i2c_control_cmd i2c_ctrl;
   } u;

@@ -6,11 +6,26 @@
 #include "exec_task.h"
 #include "usart.h"
 
+typedef int (* uartCommandFPtr)(int argc, char **argv);
+
+struct uartCommand {
+  char *name;
+  uartCommandFPtr func;
+};
+
+#define UART_CMD(_x,_y) {_x,_y}
+
 uint8_t uartRxBuf[UART_RX_BUFF_SIZE];
 uint8_t const * uartRxTailPtr;
 
 static char s_uartDataBuf[UART_RX_BUFF_SIZE];
 static uint32_t s_uartCurIdx = 0;
+
+static int do_help(int argc, char **argv);
+
+static struct uartCommand s_supportedCommands[] = {
+  UART_CMD("help", do_help),
+};
 
 static int _getAvailSize() {
   uint8_t const * head = uartRxBuf + UART_RX_BUFF_SIZE - __HAL_DMA_GET_COUNTER(huart1.hdmarx);
@@ -35,7 +50,7 @@ static int _processCommand(int len) {
   if (strncmp(s_uartDataBuf, "AT", 2) != 0) return -2;
 
   // TODO: Parsing and process UART command here.
-  // If command is valid, build command structure `struct exec_command`,
+  // If command is valid, build command structure `struct exec_command` with resp_queue = uartRespQueueHandle,
   // then send into queue `execQueueHandle`
   return -1;
 }
@@ -67,4 +82,10 @@ void uartTaskExecution(void) {
 
   // Incomplete command, wait for 1ms
   osDelay(1);
+}
+
+static int do_help(int argc, char **argv) {
+  HAL_USART_Transmit(&huart1, "AT sd dut", 1000);
+
+  return 0;
 }
