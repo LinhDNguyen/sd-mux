@@ -29,33 +29,32 @@ typedef enum {
   CMD_MAX
 } cmd_id_t;
 
-struct exec_sd_switch_cmd {
+struct __attribute__ ((packed)) exec_sd_switch_cmd {
   cmd_id_t cmd;
 };
 
-struct exec_power_cmd {
+struct __attribute__ ((packed)) exec_power_cmd {
   cmd_id_t cmd;
 };
 
-struct exec_ext_ctrl_cmd {
-  cmd_id_t cmd;
-  uint16_t channel;
-};
-
-struct exec_jumper_switch_cmd {
+struct __attribute__ ((packed)) exec_ext_ctrl_cmd {
   cmd_id_t cmd;
   uint16_t channel;
 };
 
-struct exec_i2c_control_cmd {
+struct __attribute__ ((packed)) exec_jumper_switch_cmd {
+  cmd_id_t cmd;
+  uint16_t channel;
+};
+
+struct __attribute__ ((packed)) exec_i2c_control_cmd {
   exec_type_id_t type;
   cmd_id_t cmd;
   unsigned char addr;
 };
 
-struct exec_command {
+struct __attribute__ ((packed)) exec_command {
   exec_type_id_t type;
-  osMessageQId resp_queue;
   union {
     struct exec_sd_switch_cmd sd_switch;
     struct exec_power_cmd power;
@@ -63,7 +62,10 @@ struct exec_command {
     struct exec_jumper_switch_cmd jump_switch;
     struct exec_i2c_control_cmd i2c_ctrl;
   } u;
+  osMessageQId resp_queue;
 };
+
+typedef struct exec_command exec_command_t;
 
 extern osThreadId execTaskHandle;
 extern osMessageQId execQueueHandle;

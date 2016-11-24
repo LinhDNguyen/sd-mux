@@ -6,20 +6,20 @@
 
 static char s_sdSwitchState = 0;
 static char s_powSwitchState = 0;
-static char s_extCtrlState[5] = {0};
-static char s_jumpSwitchState[5] = {0};
+static char s_extCtrlState[4] = {0};
+static char s_jumpSwitchState[4] = {0};
 
 static int _sd_switch(struct exec_sd_switch_cmd *cmd) {
   switch(cmd->cmd) {
-    case CMD_OFF:
+  case CMD_OFF:
     CARD_SWITCH_OFF();
     s_sdSwitchState = 0;
     break;
-    case CMD_ON:
+  case CMD_ON:
     CARD_SWITCH_ON();
     s_sdSwitchState = 1;
     break;
-    case CMD_TOGGLE:
+  case CMD_TOGGLE:
     if (s_sdSwitchState) {
       CARD_SWITCH_OFF();
       s_sdSwitchState = 0;
@@ -28,7 +28,7 @@ static int _sd_switch(struct exec_sd_switch_cmd *cmd) {
       s_sdSwitchState = 1;
     }
     break;
-    default:
+  default:
     return 0;
   }
 
@@ -67,93 +67,95 @@ static int _power_switch(struct exec_power_cmd *cmd) {
 static int _ext_control(struct exec_ext_ctrl_cmd *cmd) {
   switch(cmd->channel) {
     // Channel 1
-    case 1:
+    case 0:
       switch(cmd->cmd){
         case CMD_OFF:
           EXT_CTRL_1_OFF();
-          s_extCtrlState[1] = 0;
+          s_extCtrlState[0] = 0;
           break;
         case CMD_ON:
           EXT_CTRL_1_ON();
-          s_extCtrlState[1] = 1;
+          s_extCtrlState[0] = 1;
           break;
         case CMD_TOGGLE:
-          if (s_extCtrlState[1]) {
+          if (s_extCtrlState[0]) {
             EXT_CTRL_1_OFF();
-            s_extCtrlState[1] = 0;
+            s_extCtrlState[0] = 0;
           } else {
             EXT_CTRL_1_ON();
-            s_extCtrlState[1] = 1;
+            s_extCtrlState[0] = 1;
           }
           break;
       }
       break;
     // Channel 2
-    case 2:
+    case 1:
       switch(cmd->cmd){
         case CMD_OFF:
           EXT_CTRL_2_OFF();
-          s_extCtrlState[2] = 0;
+          s_extCtrlState[1] = 0;
           break;
         case CMD_ON:
           EXT_CTRL_2_ON();
-          s_extCtrlState[2] = 1;
+          s_extCtrlState[1] = 1;
           break;
         case CMD_TOGGLE:
-          if (s_extCtrlState[2]) {
+          if (s_extCtrlState[1]) {
             EXT_CTRL_2_OFF();
-            s_extCtrlState[2] = 0;
+            s_extCtrlState[1] = 0;
           } else {
             EXT_CTRL_2_ON();
-            s_extCtrlState[2] = 1;
+            s_extCtrlState[1] = 1;
           }
           break;
       }
       break;
     // Channel 3
-    case 3:
+    case 2:
       switch(cmd->cmd){
         case CMD_OFF:
           EXT_CTRL_3_OFF();
-          s_extCtrlState[3] = 0;
+          s_extCtrlState[2] = 0;
           break;
         case CMD_ON:
           EXT_CTRL_3_ON();
-          s_extCtrlState[3] = 1;
+          s_extCtrlState[2] = 1;
           break;
         case CMD_TOGGLE:
-          if (s_extCtrlState[3]) {
+          if (s_extCtrlState[2]) {
             EXT_CTRL_3_OFF();
-            s_extCtrlState[3] = 0;
+            s_extCtrlState[2] = 0;
           } else {
             EXT_CTRL_3_ON();
-            s_extCtrlState[3] = 1;
+            s_extCtrlState[2] = 1;
           }
           break;
       }
       break;
     // Channel 4
-    case 4:
+    case 3:
       switch(cmd->cmd){
         case CMD_OFF:
           EXT_CTRL_4_OFF();
-          s_extCtrlState[4] = 0;
+          s_extCtrlState[3] = 0;
           break;
         case CMD_ON:
           EXT_CTRL_4_ON();
-          s_extCtrlState[4] = 1;
+          s_extCtrlState[3] = 1;
           break;
         case CMD_TOGGLE:
-          if (s_extCtrlState[4]) {
+          if (s_extCtrlState[3]) {
             EXT_CTRL_4_OFF();
-            s_extCtrlState[4] = 0;
+            s_extCtrlState[3] = 0;
           } else {
             EXT_CTRL_4_ON();
-            s_extCtrlState[4] = 1;
+            s_extCtrlState[3] = 1;
           }
           break;
       }
       break;
+      default:
+        return -1;
   }
   return 0;
 }

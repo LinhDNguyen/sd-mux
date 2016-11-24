@@ -94,10 +94,13 @@ int main(void)
   MX_DMA_Init();
   MX_I2C2_Init();
   MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
 
   /* USER CODE BEGIN 2 */
   LED1_OFF();
   LED2_OFF();
+  CARD_RESET_ON();
+  CARD_SWITCH_OFF();
   // start receive UART
   HAL_UART_Receive_DMA(&huart1, uartRxBuf, UART_RX_BUFF_SIZE);
   uartRxTailPtr = uartRxBuf;
